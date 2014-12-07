@@ -526,6 +526,14 @@ static struct dmi_system_id acpi_osi_dmi_table[] __initdata = {
 	},
 	{
 	.callback = dmi_disable_osi_all,
+	.ident = "ASUSTeK COMPUTER INC. UX302LA",
+	.matches = {
+		     DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+		     DMI_MATCH(DMI_PRODUCT_NAME, "UX302LA"),
+		},
+	},
+	{
+	.callback = dmi_disable_osi_all,
 	.ident = "ASUSTeK COMPUTER INC. X200MA",
 	.matches = {
 		     DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
