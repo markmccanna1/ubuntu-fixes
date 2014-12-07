@@ -162,7 +162,17 @@ static int __init dmi_disable_osi_win8(const struct dmi_system_id *d)
 	acpi_osi_setup("!Windows 2012");
 	return 0;
 }
-
+/*
+ * Some ASUS models firmware declares 16 devices instead of 8
+ * 'acpi_osi=' kernel parameter fixes it
+ * Without this parameters brightness keys Fn+F5 and F6 do not work
+ */
+static int __init dmi_disable_osi_all(const struct dmi_system_id *d)
+{
+	printk(KERN_NOTICE PREFIX "DMI detected: %s\n", d->ident);
+	acpi_osi_setup("");
+	return 0;
+}
 static struct dmi_system_id acpi_osi_dmi_table[] __initdata = {
 	{
 	.callback = dmi_disable_osi_vista,
@@ -512,6 +522,14 @@ static struct dmi_system_id acpi_osi_dmi_table[] __initdata = {
 	.matches = {
 		     DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK Computer INC."),
 		     DMI_MATCH(DMI_PRODUCT_NAME, "1015PX"),
+		},
+	},
+	{
+	.callback = dmi_disable_osi_all,
+	.ident = "ASUSTeK COMPUTER INC. X200MA",
+	.matches = {
+		     DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+		     DMI_MATCH(DMI_PRODUCT_NAME, "X200MA"),
 		},
 	},
 	{}
