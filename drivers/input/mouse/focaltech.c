@@ -126,9 +126,17 @@ static void focaltech_report_state(struct psmouse *psmouse)
 		input_mt_slot(dev, i);
 		input_mt_report_slot_state(dev, MT_TOOL_FINGER, active);
 		if (active) {
-			input_report_abs(dev, ABS_MT_POSITION_X, finger->x);
+			int clamped_x, clamped_y;
+			/*
+			 * The touchpad might report invalid data, so we clamp
+			 * the resulting values so that we do not confuse
+			 * userspace.
+			 */
+			clamped_x = clamp((int)finger->x, 0, (int)priv->x_max);
+			clamped_y = clamp((int)finger->y, 0, (int)priv->y_max);
+			input_report_abs(dev, ABS_MT_POSITION_X, clamped_x);
 			input_report_abs(dev, ABS_MT_POSITION_Y,
-					 priv->y_max - finger->y);
+					 priv->y_max - clamped_y);
 		}
 	}
 	input_mt_report_pointer_emulation(dev, true);
