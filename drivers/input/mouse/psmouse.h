@@ -36,6 +36,11 @@ typedef enum {
 	PSMOUSE_FULL_PACKET
 } psmouse_ret_t;
 
+enum psmouse_scale {
+	PSMOUSE_SCALE11,
+	PSMOUSE_SCALE21
+};
+
 struct psmouse {
 	void *private;
 	struct input_dev *dev;
@@ -60,6 +65,7 @@ struct psmouse {
 
 	unsigned int rate;
 	unsigned int resolution;
+	enum psmouse_scale scale;
 	unsigned int resetafter;
 	unsigned int resync_time;
 	bool smartscroll;	/* Logitech only */
@@ -67,6 +73,7 @@ struct psmouse {
 	psmouse_ret_t (*protocol_handler)(struct psmouse *psmouse);
 	void (*set_rate)(struct psmouse *psmouse, unsigned int rate);
 	void (*set_resolution)(struct psmouse *psmouse, unsigned int resolution);
+	void (*set_scale)(struct psmouse *psmouse, enum psmouse_scale scale);
 
 	int (*reconnect)(struct psmouse *psmouse);
 	void (*disconnect)(struct psmouse *psmouse);
