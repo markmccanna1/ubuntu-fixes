@@ -459,12 +459,9 @@ static void psmouse_set_rate(struct psmouse *psmouse, unsigned int rate)
 
 static void psmouse_set_scale(struct psmouse *psmouse, enum psmouse_scale scale)
 {
-	if (scale == PSMOUSE_SCALE21) {
-		ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_SETSCALE21);
-	} else {
-		ps2_command(&psmouse->ps2dev, NULL, PSMOUSE_CMD_SETSCALE11);
-	}
-	psmouse->scale = scale;
+	ps2_command(&psmouse->ps2dev, NULL,
+		    scale == PSMOUSE_SCALE21 ? PSMOUSE_CMD_SETSCALE21 :
+					       PSMOUSE_CMD_SETSCALE11);
 }
 
 /*
@@ -1505,7 +1502,6 @@ static int psmouse_connect(struct serio *serio, struct serio_driver *drv)
 
 	psmouse->rate = psmouse_rate;
 	psmouse->resolution = psmouse_resolution;
-	psmouse->scale = PSMOUSE_SCALE11;
 	psmouse->resetafter = psmouse_resetafter;
 	psmouse->resync_time = parent ? 0 : psmouse_resync_time;
 	psmouse->smartscroll = psmouse_smartscroll;

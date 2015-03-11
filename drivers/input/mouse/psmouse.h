@@ -65,7 +65,6 @@ struct psmouse {
 
 	unsigned int rate;
 	unsigned int resolution;
-	enum psmouse_scale scale;
 	unsigned int resetafter;
 	unsigned int resync_time;
 	bool smartscroll;	/* Logitech only */
